@@ -3,7 +3,7 @@ title: "Zeyd Khalil HW9, October 22, 2020"
 output: pdf_document
 ---
 
-```{r}
+```{r, error=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(nycflights13)
 d <- data(package = "nycflights13")
@@ -44,6 +44,14 @@ atmos %>% count(lat, long, year, month) %>% filter(n>1)
 
 > The relationship between the Batting, Master, and Salaries tables is that they all have a playerID variable. 
 
+```{r}
+Master %>% count(playerID) %>% filter(n>1)
+Salaries %>% count(playerID) %>% filter(n>1) %>% head()
+Batting %>% count(playerID) %>% filter(n>1) %>% head()
+```
+
+> The primary key in Master is playerID. However, that is not the case in Salaries and Batting. In fact, Salaries and Batting both do not have a primary key, because all their variables repeat themselves more than once. 
+
 # Exercise 3 - (2 points) Use an appropriate join to add a column containing the airline name to the flights dataset. Be sure to put the carrier code and name in the first two columns of the result so we can see them. Save the result as flights2.  
 
 ```{r}
@@ -55,9 +63,9 @@ flights2
 # Exercise 4 - Use an appropriate join to add the airport name to the flights2 dataset you got in exercise 3. The codes and names of the airports are in the airports dataset of the nycflights13 package. Put the carrier and carrier name first followed by the destination and destination name, then everything else.  
 
 ```{r}
-flights3 <- flights2 %>% left_join(airports, c("dest" = "faa"))
+flights3 <- flights2 %>% left_join(airports, c("dest" = "faa")) %>% rename(c("dest_name" = "name.y"), c("dest." = "origin"), c("carrier_name" = "name.x"))
 
-flights3
+flights3 %>% select(carrier, carrier_name, dest., dest_name, everything())
 ```  
 
 # Exercise 5 - Compute the average delay by destination, then join on the airports data frame so you can show the spatial distribution of delays.
@@ -78,7 +86,7 @@ flights4 <- flights4 %>% na.omit()
 flights4 %>% ggplot(aes(lon, lat, color = avg_delay)) + borders("state") + geom_point() + coord_quickmap()
 ```   
 
-# Exercise 6 - 
+# Exercise 6 - Use a set operation function to find which airport codes from flights are not in the airports dataset. 
 
 ```{r}
 flightsOrigin <- flights %>% select(origin)
