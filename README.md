@@ -1,5 +1,7 @@
 # RSTATHW9
 
+DONE! ready to submit - 21 oct 3:30 pm
+
 - Supress packages and libraries
 - second part of ex2! 
 Exercise2: (1/2 pt) What is the relationship between the Batting, Master, and Salaries tables in the Lahman package? What are the keys for each dataset and how do they relate to each other?
